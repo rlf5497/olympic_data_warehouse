@@ -29,20 +29,20 @@ LANGUAGE plpgsql
 AS $$
 DECLARE
 	-- Start/end timestamps for each ingestion
-	start_time			  TIMESTAMP;
-	end_time			    TIMESTAMP;
+	start_time			  	TIMESTAMP;
+	end_time			  	TIMESTAMP;
 
 	-- Number of rows loaded per table
-	loaded_count		  INTEGER;
+	loaded_count		  	INTEGER;
 
 	-- Tracks total execution duration
-	batch_start_time	TIMESTAMP := clock_timestamp();
+	batch_start_time		TIMESTAMP := clock_timestamp();
 
 	-- File Paths
-	bios				      TEXT := base_path || '\bios.csv';
+	bios				    TEXT := base_path || '\bios.csv';
 	bios_locs			    TEXT := base_path || '\bios_locs.csv';
-	noc_regions			  TEXT := base_path || '\noc_regions.csv';
-	populations			  TEXT := base_path || '\populations.csv';
+	noc_regions			  	TEXT := base_path || '\noc_regions.csv';
+	populations			  	TEXT := base_path || '\populations.csv';
 	results				    TEXT := base_path || '\results.csv';
 
 BEGIN
