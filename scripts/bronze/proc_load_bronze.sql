@@ -46,15 +46,15 @@ DECLARE
 	results				    TEXT := base_path || '\results.csv';
 
 BEGIN
-  RAISE NOTICE '================================================================================';
+  	RAISE NOTICE '================================================================================';
 	RAISE NOTICE 'Loading Bronze Layer';
 	RAISE NOTICE 'Base Path: %', base_path;
-  RAISE NOTICE '================================================================================';
+  	RAISE NOTICE '================================================================================';
 
 -------------------------------------
 -- Load olympics_bios
 -------------------------------------
-  RAISE NOTICE 'Loading bronze.olympics_bios...';
+  	RAISE NOTICE 'Loading bronze.olympics_bios...';
 
 	start_time := clock_timestamp();
 	TRUNCATE TABLE bronze.olympics_bios;
@@ -75,7 +75,7 @@ BEGIN
 -------------------------------------
 -- Load olympics_bios_locs
 -------------------------------------
-  RAISE NOTICE 'Loading bronze.olympics_bios_locs...';
+  	RAISE NOTICE 'Loading bronze.olympics_bios_locs...';
 
 	start_time := clock_timestamp();
 	TRUNCATE TABLE bronze.olympics_bios_locs;
@@ -96,7 +96,7 @@ BEGIN
 -------------------------------------
 -- Load olympics_noc_regions
 -------------------------------------
-  RAISE NOTICE 'Loading bronze.olympics_noc_regions...';
+  	RAISE NOTICE 'Loading bronze.olympics_noc_regions...';
 	
 	start_time := clock_timestamp();
 	TRUNCATE TABLE bronze.olympics_noc_regions;
@@ -117,7 +117,7 @@ BEGIN
 -------------------------------------
 -- Load olympics_populations
 -------------------------------------
-  RAISE NOTICE 'Loading bronze.olympics_populations...';
+  	RAISE NOTICE 'Loading bronze.olympics_populations...';
 
 	start_time := clock_timestamp();
 	TRUNCATE TABLE bronze.olympics_populations;
@@ -138,7 +138,7 @@ BEGIN
 -------------------------------------
 -- Load olympics_results
 ------------------------------------
-  RAISE NOTICE 'Loading bronze.olympics_results...';
+  	RAISE NOTICE 'Loading bronze.olympics_results...';
 
 	start_time := clock_timestamp();
 	TRUNCATE TABLE bronze.olympics_results;
@@ -170,8 +170,8 @@ BEGIN
 EXCEPTION
 	WHEN OTHERS THEN
     RAISE NOTICE '========================================';
-		RAISE NOTICE 'ERROR OCCURED: %', SQLERRM;
-		RAISE;
+	RAISE NOTICE 'ERROR OCCURED: %', SQLERRM;
+	RAISE;
 END;
 $$
 	
