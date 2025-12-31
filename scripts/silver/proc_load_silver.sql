@@ -209,6 +209,8 @@ BEGIN
 		t.year_col::INT 												AS year,
 		t.population	
 	FROM bronze.olympics_populations 									AS op
+	-- Converts population data from wide format (one column per year)
+	-- into a normalized long format using CROSS JOIN LATERAL
 	CROSS JOIN LATERAL (
 		VALUES
 	        ('1960', "1960"), ('1961', "1961"), ('1962', "1962"),
