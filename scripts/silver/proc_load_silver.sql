@@ -90,12 +90,17 @@ BEGIN
 		(silver.parse_location(died)).country_code							AS died_country_code,
 		INITCAP(noc)														AS noc,
 		athlete_id,
+		
+		-- Extract height in centimeters by capturing the numeric value directly followed by 'cm'
+		-- (ensures the correct value is selected when multiple numbers are present)
 		CASE
 			WHEN	measurements~*		'(\d{2,3})\s*cm'
 			THEN	SUBSTRING			(measurements FROM '(\d{2,3})\s*cm')::NUMERIC
 			ELSE	NULL
 		END																	AS height_cm,
-	
+
+		-- Extract weight in kilograms by capturing the numeric value directly followed by 'kg'
+		-- (handles multiple values by selecting the one explicitly labeled with 'kg')
 		CASE
 			WHEN	measurements~*		'(\d{2,3})\s*kg'
 			THEN	SUBSTRING			(measurements FROM '(\d{2,3})\s*kg')::NUMERIC
