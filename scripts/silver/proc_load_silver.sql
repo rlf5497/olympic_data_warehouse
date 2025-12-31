@@ -282,8 +282,13 @@ BEGIN
 		team,
 		SUBSTRING(pos FROM '^\s*=?(\d+)(?:\.0)?\s*$')::INT				AS pos,
 		CASE
+			-- '=' prefix indicates a tied position
 			WHEN pos ~ '^\s*=\d+(\.0)?\s*$' THEN TRUE
+			
+			-- plain numeric value indicates a non-tied position
 			WHEN pos ~ '^\s*\d+(\.0)?\s*$'  THEN FALSE
+
+			-- mixed or non-numeric formates are treated as invalid
 			ELSE NULL
 		END 															AS is_tied,
 		medal,
