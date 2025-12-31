@@ -275,7 +275,7 @@ BEGIN
 		END 															AS game_type,
 		sport_event,
 		team,
-		SUBSTRING(pos FROM '^\s*=?(\d+)(?:\.0)?\s*$')::INT 			AS pos,
+		SUBSTRING(pos FROM '^\s*=?(\d+)(?:\.0)?\s*$')::INT				AS pos,
 		CASE
 			WHEN pos ~ '^\s*=\d+(\.0)?\s*$' THEN TRUE
 			WHEN pos ~ '^\s*\d+(\.0)?\s*$'  THEN FALSE
