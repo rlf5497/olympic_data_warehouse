@@ -40,10 +40,10 @@ Notes:
 DROP TABLE IF EXISTS silver.olympics_bios;
 
 CREATE TABLE silver.olympics_bios (
-	sex						        VARCHAR(10),
-	used_name				      VARCHAR(55),
-	born_date				      DATE,
-	born_city				      VARCHAR(55),
+	sex										VARCHAR(10),
+	used_name							VARCHAR(55),
+	born_date				    	DATE,
+	born_city				   		VARCHAR(55),
 	born_region				    VARCHAR(40),
 	born_country_code		  VARCHAR(10),
 	died_date				      DATE,
