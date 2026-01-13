@@ -118,9 +118,9 @@ CREATE TABLE IF NOT EXISTS gold.dim_sport_events (
 		- silver.olympics_results
 ===================================================================== */
 
-DROP TABLE IF EXISTS gold.fact_results;
+DROP TABLE IF EXISTS gold.fact_olympic_results;
 
-CREATE TABLE IF NOT EXISTS gold.fact_results (
+CREATE TABLE IF NOT EXISTS gold.fact_olympic_results (
 	athlete_key					INT NOT NULL,									-- FK to dim_athletes
 	game_key					INT NOT NULL,									-- FK to dim_games
 	sport_event_key				INT	NULL,										-- FK to dim_sport_events
