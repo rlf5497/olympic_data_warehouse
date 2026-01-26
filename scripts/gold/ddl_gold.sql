@@ -11,6 +11,11 @@
 		- Primary keys are GENERATED ALWAYS AS IDENTITY
 		- Foreign keys reference Gold dimensions
 		- All tables are DROP/CREATE for idempotent deployment
+
+	Note:
+		- The fact table (fact_olympic_results) represents Olympic participation
+		- Some dimension records (e.g., athletes) may not have corresponding
+		  fact records if they never participated in an Olympic event.
 ===================================================================== */
 
 
@@ -23,6 +28,13 @@
 	Source:
 		- silver.olympics_bios
 		- silver.olympics_bios_locs
+
+	Note:
+		- This dimension contains all athletes present in the source bios data.
+		- Not all athletes are guaranteed to have participation records
+		  in the Olympic results fact table.
+		- As a result, fact-based analytics will include only athletes
+		  with at least one participation record.
 ===================================================================== */
 
 DROP TABLE IF EXISTS gold.dim_athletes;
@@ -116,6 +128,11 @@ CREATE TABLE IF NOT EXISTS gold.dim_sport_events (
 
 	Source:
 		- silver.olympics_results
+
+	Note:
+		- This fact table defines the analytical scope for Olympic participation.
+		- Dimensions joined to this fact will reflect only records
+		  associated with at least one participation event.
 ===================================================================== */
 
 DROP TABLE IF EXISTS gold.fact_olympic_results;
