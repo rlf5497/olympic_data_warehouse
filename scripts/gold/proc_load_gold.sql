@@ -17,6 +17,8 @@
 
 	Notes:
 		- Surrogate keys are regenerated on each run
+		- Fact table defines the analytical scope (Olympic participation)
+		- Dimensions may contain records that do not appear in the fact table
 ===================================================================== */
 
 
@@ -43,9 +45,16 @@ BEGIN
 	RAISE NOTICE '====================================================';
 
 
-    -------------------------------------
-    -- DIMENSION: gold.dim_athletes
-    -------------------------------------
+	-------------------------------------
+	-- DIMENSION: gold.dim_athletes
+	--
+	-- Grain:
+	--   One row per athlete
+	--
+	-- Coverage Note:
+	--   This dimension includes all athletes present in the bios source,
+	--   regardless of Olympic participation.
+	-------------------------------------
 	RAISE NOTICE 'Loading dimension: gold.dim_athletes';
 
 	start_time := clock_timestamp();
@@ -100,8 +109,12 @@ BEGIN
 
 
 	-------------------------------------
-    -- DIMENSION: gold.dim_nocs
-    -------------------------------------
+	-- DIMENSION: gold.dim_nocs
+	--
+	-- Integration Logic:
+	--   - Combines NOCs from reference data and results
+	--   - Ensures coverage for all NOCs appearing in facts
+	-------------------------------------
 	RAISE NOTICE 'Loading dimension: gold.dim_nocs';
 
 	start_time := clock_timestamp();
@@ -140,8 +153,11 @@ BEGIN
 		
 
 	-------------------------------------
-    -- DIMENSION: gold.dim_games
-    -------------------------------------
+	-- DIMENSION: gold.dim_games
+	--
+	-- Grain:
+	--   One row per Olympic Games (year + season)
+	-------------------------------------
 	RAISE NOTICE 'Loading dimension: gold.dim_games';
 
 	start_time := clock_timestamp();
@@ -167,8 +183,11 @@ BEGIN
 		
 
 	-------------------------------------
-    -- DIMENSION: gold.dim_sport_events
-    -------------------------------------
+	-- DIMENSION: gold.dim_sport_events
+	--
+	-- Grain:
+	--   One row per unique sport event
+	-------------------------------------	
 	RAISE NOTICE 'Loading dimension: gold.dim_sport_events';
 
 	start_time := clock_timestamp();
@@ -198,8 +217,16 @@ BEGIN
 		
 	
 	-------------------------------------
-    -- FACT: gold.fact_olympic_results
-    -------------------------------------
+	-- FACT: gold.fact_olympic_results
+	--
+	-- Grain:
+	--   One row per athlete per Olympic Games per participation record
+	--
+	-- Notes:
+	--   - LEFT JOINs are used to prevent loss of participation records
+	--   - Fact rows may reference NULL dimension keys if lookup data is missing
+	--   - Analytics based on this table reflect participation-driven scope
+	-------------------------------------
 	RAISE NOTICE 'Loading fact table: gold.fact_olympic_results';
 
 	start_time := clock_timestamp();
