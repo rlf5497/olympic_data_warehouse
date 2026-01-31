@@ -20,8 +20,8 @@ Notes:
 	* Silver tables are recreated to enforce consistent schemas and data types.
 	* Data cleansing and standardization occur in this layer (e.g., parsed dates,
 	  normalized locations, numeric casting).
-	* Derived attributes are introduced where applicable (e.g., position parsing,
-	  is_tied flag).
+	* Ligth derived attributes are introduced where applicable (e.g., parsed finishing positions,
+	  tie indicators).
 	* No aggregation or business metrics are created in Silver; these are handled
 	  in the Gold Layer
 ==========================================================================================
@@ -33,8 +33,8 @@ Notes:
 	TABLE: silver.olympics_bios
 	Description:
 		Curated athlete biographical data derived from bronze.olympics_bios.
-		Applies standardized date parsing, normalized locations, and cleaned
-		physical measurements.
+		Applies standardized date parsing, normalized location attributes, and
+		cleaned physical measurements.
 =================================================================================*/
 
 DROP TABLE IF EXISTS silver.olympics_bios;
@@ -105,7 +105,7 @@ CREATE TABLE silver.olympics_noc_regions (
 	TABLE: silver.olympics_populations
 	Description:
 		Country population reference data used for analytical enrichment
-		and contextual comparisons.
+		and contextual population-based comparisons.
 =================================================================================*/
 
 DROP TABLE IF EXISTS silver.olympics_populations;
@@ -124,7 +124,8 @@ CREATE TABLE silver.olympics_populations (
 	TABLE: silver.olympics_results
 	Description:
 		Cleaned and standardized Olympic competition results.
-		Includes parsed finishing positions, tie indicators, and medal outcomes.
+		Includes parsed finishing positions, tie indicators, and standardized
+		medal outcomes.
 =================================================================================*/
 
 DROP TABLE IF EXISTS silver.olympics_results;
