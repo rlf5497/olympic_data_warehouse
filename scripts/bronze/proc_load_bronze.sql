@@ -1,25 +1,33 @@
 /*
 ====================================================================================================
 Procedure: bronze.load_bronze
+Layer: Bronze
+
 Purpose:
-	Load raw CSV files into the Bronze Layer of the Olympic Data Warehouse.
-	This procedure truncates and reloads all Bronze tables to ensure a clean and consistent raw layer.
+	Load raw CSV files into the Bronze layer of the Olympic Data Warehouse.
+	This procedure truncates and reloads all Bronze tables to ensure a clean,
+	consistent raw ingestion layer.
+
+Execution Guarantees:
+	- All tables are fully replaced on each run
+	- No data transformation or validation is applied
+	- Failures abort execution to prevent partial ingestion
 
 Usage Example:
-  CALL bronze.load_bronze('C:\sql\olympic-data-warehouse\datasets\raw');
-	
+	CALL bronze.load_bronze('C:\sql\olympic-data-warehouse\datasets\source_olympics');
+
 Notes:
-	- Bronze layer contains RAW, unmodified, uncleaned ingestion tables.
-	- Uses PostgreSQL Copy command for high-performance ingestion.
-	- Base folder path must contain all required CSV files:
-        • bios.csv
-        • bios_locs.csv
-        • noc_regions.csv
-        • populations.csv
-        • results.csv
+	- Bronze layer contains RAW, unmodified source data
+	- Uses PostgreSQL COPY for high-performance ingestion
+	- CSV structure must match table definitions exactly
 
 Parameters:
-	base_path (TEXT) - folder path to the CSV files
+	base_path (TEXT) - Absolute folder path containing source CSV files:
+		- bios.csv
+		- bios_locs.csv
+		- noc_regions.csv
+		- populations.csv
+		- results.csv
 ====================================================================================================
 */
 
