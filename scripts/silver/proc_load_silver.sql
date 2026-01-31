@@ -2,7 +2,7 @@
 ==========================================================================================
 Script: proc_load_silver.sql
 Layer: Silver (Curated & Standardized Layer)
-==========================================================================================
+
 Purpose:
 	Loads cleaned, standardized, and enriched data into the Silver Layer of the
 	Olympics Data Warehouse. 
