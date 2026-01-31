@@ -1,28 +1,27 @@
 /*============================================================================
 Function	: silver.parse_location
-Layer		: Silver
-Puporse		: Parse and normalize location components from raw text fields.
+Layer		: Silver (Curated & Standardized Layer)
+Purpose		: Parse and normalize location components from raw text fields.
 
 Description	:
-	This function extracts structured location attributes (city, region, 
-	country_code) from a semi-structured text  field originating from the
-	Bronze Layer.
+	Extracts structured geographic attributes (city, region, country_code)
+	from semi-structured location text originating from the Bronze layer.
 
-Supported raw patterns	:
+Supported Raw Patterns:
 	- "in City, Region (NOC)"
 	- "in ?, Region (NOC)"
 	- "in City, Region (NOC) (circa YYYY)"
 	- "(circa YYYY)"		-> returns all NULLs
 
-Data Quality Rules	:
+Data Quality Rules:
 	- Placeholder value such as '?' are normalized to NULL
 	- Leading/trailing whitespace is removed
-	- If no valid location pattern exists, NULLs are returned
+	- If no valid location pattern exists, all attributes return NULL
 
-Notes	:
-	- This function performs parsing + normalization only
+Notes:
+	- This function performs parsing and normalization only
 	- Date parsing (including circa handling) is handled separately
-	- Designed for deterministic use in Silver transformations
+	- Designed for deterministic use in Silver-layer transformations
 
 Returns	:
 	city			TEXT
@@ -42,8 +41,8 @@ AS $$
 	SELECT
 		/*------------------------------------------------------------
 			City:
-				Extracts value after 'in' and before first comma.
-				Converts '?' placeholder to NULL.
+				Extracts value following 'in' and preceding the first comma.
+				Normalizes '?' placeholder values to NULL.
 		------------------------------------------------------------*/
 		NULLIF(
 			TRIM(SUBSTRING($1 FROM 'in\s+([^,]+),')),
@@ -52,8 +51,8 @@ AS $$
 
 		/*------------------------------------------------------------
 			Region:
-				Extacts value between comma & country code.
-				Converts '?' placeholder to NULL.
+				Extracts value between comma and the country code.
+				Normalizes '?' placeholder values to NULL.
 		------------------------------------------------------------*/
 		NULLIF(
 			TRIM(SUBSTRING($1 FROM ',\s+([^,]+)\s+\(\w{3}\)')),
@@ -62,8 +61,8 @@ AS $$
 
 		/*------------------------------------------------------------
 			Country Code:
-				Extracts 3-letter code inside parentheses.
-				Returns NULL if pattern does not exist.
+				Extracts 3-letter code enclosed in parentheses.
+				Returns NULL if no valid pattern is present.
 		------------------------------------------------------------*/
 		SUBSTRING($1 FROM '\((\w{3})\)') AS country_code;
 $$;
@@ -75,11 +74,11 @@ OWNER TO postgres;
 
 
 
-/*============================================================================
+/* ============================================================================
    Function : silver.parse_date
-   Layer    : Silver
+   Layer    : Silver (Curated & Standardized Layer)
    Purpose  : Extract and normalize partial and semi-structured date strings
-              into a PostgreSQL DATE.
+              into a PostgreSQL DATE value.
 
    Supported inputs:
      - "1 April 1871"                          → 1871-04-01
@@ -90,14 +89,15 @@ OWNER TO postgres;
      - "in Tokyo (JPN) circa 1914"             → 1914-01-01
 
    Data Quality Rules:
-     - Ambiguous ranges (e.g. "1926 or 1927") → NULL
-     - Missing month/day → imputed as January 1
-     - Invalid / non-date strings → NULL
+     - Ambiguous year ranges (e.g. "1926 or 1927") → NULL
+     - Missing month and/or day values are imputed as January 1
+     - Invalid or non-date strings return NULL
 
    Notes:
      - Date text is extracted FIRST, then converted
-     - Regex order is critical to prevent invalid TO_DATE calls
-============================================================================ */
+     - Regex evaluation order is critical to avoid invalid TO_DATE calls
+	 - Designed for deterministic use in Silver-layer transformations
+   ============================================================================ */
 
 CREATE OR REPLACE FUNCTION silver.parse_date(text)
 RETURNS DATE
