@@ -119,7 +119,7 @@ WHERE
 
 -- 6. Check for duplicate sport_event_keys
 -- 	  sport_event_key must be unique and NOT NULL in the dimension
---	  Optional relationship applies ONLY in the fact tale
+--	  Optional relationship applies ONLY in the fact table
 -- 	  Expected result: ZERO ROWS
 SELECT
 	sport_event_key,
@@ -141,7 +141,7 @@ OR	sport_event_key IS NULL;
 --		- Natural keys are enforced during load.
 --		- This check validates surrogate key integrity only
 SELECT 
-	COUNT(*) AS missing_sport_event_keys
+	COUNT(*) AS null_or_unmatched_sport_event_keys
 FROM gold.fact_olympic_results AS r
 LEFT JOIN gold.dim_sport_events AS dse
 	   ON r.sport_event_key = dse.sport_event_key
