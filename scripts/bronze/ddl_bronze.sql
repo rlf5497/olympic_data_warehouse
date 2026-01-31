@@ -2,11 +2,18 @@
 ==========================================================================================
 Script: ddl_bronze.sql
 Layer: Bronze (Raw Ingestion Layer)
-==========================================================================================
+
 Purpose:
-	Defines all Bronze-layer tables for the Olympic Data Warehouse. The Bronze layer stores
-	raw, uncleaned, untransformed data exactly as ingested from the source systems. These tables
-	are recreated on each load to ensure a consistent raw structure.
+	Defines all Bronze-layer tables for the Olympic Data Warehouse.
+	The Bronze layer stores raw, uncleaned, untransformed data exactly as ingested
+	from source systems. Tables are recreated on each load to ensure structural
+	consistency with the source files.
+
+Design Principles:
+	- Schema-on-read
+	- No transformations or business logic
+	- Columns closely mirror source CSV structure
+	- Downstream cleansing and modeling occur in Silver and Gold layers
 
 Contents:
 	- bronze.olympics_bios
@@ -14,18 +21,16 @@ Contents:
 	- bronze.olympics_noc_regions
 	- bronze.olympics_populations
 	- bronze.olympics_results
-
-Notes:
-	* No transformations are done in Bronze.
-	* Column names and datatypes follow the original raw files as closely as possible.
-	* Cleaning, standardization, and relational modeling happen in the Silver & Gold Layer.
 ==========================================================================================
-*/
 
 
 /*===============================================================================
 	TABLE: bronze.olympics_bios
-	Description: Raw athlete biography data scraped from the Olympedia website.
+	Description:
+		Raw athlete biography data scraped from the Olympedia website.
+
+	Grain:
+		One row per athlete record as represented in the source file.
 =================================================================================*/
 
 DROP TABLE IF EXISTS bronze.olympics_bios;
