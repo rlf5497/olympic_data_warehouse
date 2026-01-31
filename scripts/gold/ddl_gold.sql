@@ -1,27 +1,28 @@
 /* =====================================================================
 	File: ddl_gold.sql
-	Layer: Gold
+	Layer: Gold (Business-Ready / Analytics Layer)
+	
 	Purpose:
 		- Define dimensional and fact tables for analytics consumption
-		- Tables follow a STAR SCHEMA design
+		- Implements a START SCHEMA optimized for BI and reporting workloads
 		- Data is sourced, cleansed, and conformed from Silver layer
 
 	Conventions:
-		- Surrogate keys *_key naming
+		- Surrogate keys *_key naming convention
 		- Primary keys are GENERATED ALWAYS AS IDENTITY
-		- Foreign keys reference Gold dimensions
-		- All tables are DROP/CREATE for idempotent deployment
+		- Foreign keys reference Gold-layer dimensions
+		- Tables are DROP / CREATE for idempotent deployments
 
-	Note:
-		- The fact table (fact_olympic_results) represents Olympic participation
-		- Some dimension records (e.g., athletes) may not have corresponding
-		  fact records if they never participated in an Olympic event.
+	Notes:
+		- The fact table (gold.fact_olympic_results) represents Olympic participation
+		- Some dimension entities (e.g., athletes) may exist without corresponding
+		  fact records if no Olympic participation occured
 ===================================================================== */
 
 
 
 /* =====================================================================
-	Dimension: dim_athletes
+	Dimension: gold.dim_athletes
 	Grain:
 		- One row per athlete
 
@@ -29,12 +30,12 @@
 		- silver.olympics_bios
 		- silver.olympics_bios_locs
 
-	Note:
-		- This dimension contains all athletes present in the source bios data.
+	Notes:
+		- Contains all athletes present in the source biographical data
 		- Not all athletes are guaranteed to have participation records
-		  in the Olympic results fact table.
-		- As a result, fact-based analytics will include only athletes
-		  with at least one participation record.
+		  in the Olympic results fact table
+		- Fact-based analytics will therefore include only athletes
+		  associated with at least one participation event
 ===================================================================== */
 
 DROP TABLE IF EXISTS gold.dim_athletes;
@@ -62,9 +63,9 @@ CREATE TABLE IF NOT EXISTS gold.dim_athletes (
 
 
 /* =====================================================================
-	Dimension: dim_nocs
+	Dimension: gold.dim_nocs
 	Grain:
-		- One row per NOC (National Olympic Committee)
+		- One row per National Olympic Committee (NOC)
 
 	Source:
 		- silver.olympics_noc_regions
@@ -83,7 +84,7 @@ CREATE TABLE IF NOT EXISTS gold.dim_nocs (
 
 
 /* =====================================================================
-	Dimension: dim_games
+	Dimension: gold.dim_games
 	Grain:
 		- One row per Olympic Games (year + season)
 
@@ -102,7 +103,7 @@ CREATE TABLE IF NOT EXISTS gold.dim_games (
 
 
 /* =====================================================================
-	Dimension: dim_sport_events
+	Dimension: gold.dim_sport_events
 	Grain:
 		- One row per sport event
 
@@ -122,17 +123,17 @@ CREATE TABLE IF NOT EXISTS gold.dim_sport_events (
 
 
 /* =====================================================================
-	Dimension: fact_results
+	Dimension: gold.fact_olympic_results
 	Grain:
 		- One row per athlete per Olympic Games per participation record
 
 	Source:
 		- silver.olympics_results
 
-	Note:
-		- This fact table defines the analytical scope for Olympic participation.
-		- Dimensions joined to this fact will reflect only records
-		  associated with at least one participation event.
+	Notes:
+		- Defines the analytical scope for Olympic Participation
+		- Only dimension records associated with at least one participation
+		  event will appear in fact-drive results.
 ===================================================================== */
 
 DROP TABLE IF EXISTS gold.fact_olympic_results;
