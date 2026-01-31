@@ -27,19 +27,14 @@ The following CSV files are used as input sources:
 
 
 ### athletes/
--  `bios.csv`
-  Athlete demographic and biographical information
+-  `bios.csv`        - Athlete demographic and biographical information
 
 
 ### clean_data/
-- `bios_locs.csv`  
-  Athlete birth and death location details.
-- `noc_regions.csv`  
-  National Olympic Committee (NOC) reference data.
-- `populations.csv`  
-  Population reference data by country.
-- `results.csv`  
-  Olympic event results by athlete, sport, and games.
+- `bios_locs.csv`     - Athlete birth and death location details.
+- `noc_regions.csv`   - National Olympic Committee (NOC) reference data.
+- `populations.csv`   - Population reference data by country.
+- `results.csv`       - Olympic event results by athlete, sport, and games.
 
 Files not listed above are not ingested into the data warehouse.
 
